@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class CSVFileReader implements DataReader {
     private CSVReader csvReader;
     private int currentRowNumber;
     private boolean forceUTF8;
+    private char CSVSeparator;
     private List<String> headerRow;
     private boolean isOpen;
 
@@ -77,6 +79,8 @@ public class CSVFileReader implements DataReader {
     public CSVFileReader(File file, Config config) {
         this.file = file;
         forceUTF8 = config.isBulkAPIEnabled() || config.getBoolean(Config.READ_UTF8);
+        LOGGER.info(config.getString(Config.CSV_SEPARATOR));
+        CSVSeparator =  config.getString(Config.CSV_SEPARATOR).charAt(0);
     }
 
     @Override
@@ -253,9 +257,9 @@ public class CSVFileReader implements DataReader {
         try {
             input = new FileInputStream(file);
             if (forceUTF8 || isUTF8File(file)) {
-                csvReader = new CSVReader(input, "UTF-8");
+                csvReader = new CSVReader(input, "UTF-8",CSVSeparator);
             } else {
-                csvReader = new CSVReader(input);
+                csvReader = new CSVReader(new InputStreamReader(input),CSVSeparator);
             }
             csvReader.setMaxRowsInFile(Integer.MAX_VALUE);
             csvReader.setMaxCharsInFile(Integer.MAX_VALUE);

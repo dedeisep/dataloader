@@ -63,7 +63,7 @@ public class UIUtils {
             image_registry.put("logo", 
                     ImageDescriptor.createFromURL(baseClass.getClassLoader().getResource("img/appExch_dataload_logo.gif")));
             image_registry.put("splashscreens", 
-                    ImageDescriptor.createFromURL(baseClass.getClassLoader().getResource("img/splashscreens.gif")));
+                    ImageDescriptor.createFromURL(baseClass.getClassLoader().getResource("img/splashscreens.png")));
 
             for (OperationInfo info : OperationInfo.values()) {
                 if (image_registry.get(info.getIconName()) == null)

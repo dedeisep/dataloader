@@ -54,6 +54,7 @@ public class SettingsPage extends WizardPage {
     private final Controller controller;
     private Text textPassword;
     private Text textUsername;
+    private Combo endpointCombo;
     private Button isSessionIdLogin;
     private Text textSessionId;
     private Text textEndpoint;
@@ -102,19 +103,35 @@ public class SettingsPage extends WizardPage {
         data = new GridData();
         data.verticalSpan = 2;
         composite2.setLayoutData(data);
-
+ 
         Label labelPassword = new Label(comp, SWT.RIGHT);
         labelPassword.setText(Labels.getString("SettingsPage.password")); //$NON-NLS-1$
 
         textPassword = new Text(comp, SWT.BORDER | SWT.PASSWORD);
         // don't want to cache the password
-        config.setValue(Config.PASSWORD, ""); //$NON-NLS-1$
+        //config.setValue(Config.PASSWORD, ""); //$NON-NLS-1$
         textPassword.setText(config.getString(Config.PASSWORD));
 
         data = new GridData(SWT.FILL, SWT.CENTER, true, false);
         data.widthHint = 150;
         textPassword.setLayoutData(data);
-
+        
+        
+        Label endpointLabel = new Label(comp,SWT.RIGHT);
+        endpointLabel.setText(Labels.getString("SettingsPage.instServerUrl"));
+        
+       endpointCombo = new Combo(comp, SWT.BORDER);
+       endpointCombo.add(Config.PRODUCTION_ENDPOINT_URL);
+       endpointCombo.add(Config.SANDBOX_ENDPOINT_URL);
+       endpointCombo.setSize(250, 41);
+       endpointCombo.setText(config.getString(Config.ENDPOINT));
+       
+       data = new GridData();
+       endpointCombo.setLayoutData(data);
+       
+       
+       
+       
         if(config.getBoolean(Config.SFDC_INTERNAL)) {
             //spacer
             Label spacer = new Label(comp, SWT.NONE);
@@ -226,7 +243,7 @@ public class SettingsPage extends WizardPage {
             Config config = controller.getConfig();
             config.setValue(Config.USERNAME, textUsername.getText());
             config.setValue(Config.PASSWORD, textPassword.getText());
-
+            config.setValue(Config.ENDPOINT, endpointCombo.getText());
             if(config.getBoolean(Config.SFDC_INTERNAL)) {
                 config.setValue(Config.SFDC_INTERNAL_IS_SESSION_ID_LOGIN, isSessionIdLogin.getSelection());
                 config.setValue(Config.SFDC_INTERNAL_SESSION_ID, textSessionId.getText());

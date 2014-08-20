@@ -27,6 +27,9 @@ package com.salesforce.dataloader.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * This is the base class for the LoadWizard ui pages. Allows navigation to be done dynamically by forcing setupPage to
@@ -44,7 +47,7 @@ public abstract class LoadPage extends WizardPage {
      * 
      */
     public LoadPage(String pageName, String title, ImageDescriptor titleImage) {
-        super(pageName, title, titleImage);
+    	super(pageName, title, titleImage);
     }
 
     abstract boolean setupPage();
@@ -61,7 +64,14 @@ public abstract class LoadPage extends WizardPage {
             return this;
         }
     }
-
+    
+   /* @Override
+    public Shell getShell(){
+    	Shell ret = super.getShell();
+		ret.setBackground(new Color(Display.getCurrent(),0 ,136, 204));
+    	return ret;
+    }
+*/
     /**
      * Need to subclass this function to prevent the getNextPage() function being called before the button is clicked.
      */

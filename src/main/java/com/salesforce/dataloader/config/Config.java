@@ -83,13 +83,17 @@ public class Config {
     public static final int DEFAULT_BULK_API_BATCH_SIZE = 2000;
     public static final long DEFAULT_BULK_API_CHECK_STATUS_INTERVAL = 5000L;
 	public static final String DEFAULT_ENDPOINT_URL = "https://login.salesforce.com";
+	public static final String DEFAULT_CSV_SEPARATOR = ",";
     /**
      * Constants that were made not configurable by choice
      */
     public static final String ID_COLUMN_NAME = "ID"; //$NON-NLS-1$
     public static final String ERROR_COLUMN_NAME = "ERROR"; //$NON-NLS-1$
     public static final String STATUS_COLUMN_NAME = "STATUS"; //$NON-NLS-1$
-
+    public static final String PRODUCTION_ENDPOINT_URL = "https://login.salesforce.com";
+    public static final String SANDBOX_ENDPOINT_URL = "https://test.salesforce.com";
+    
+    
     /**
      * The mapping from preference name to preference value (represented as strings).
      */
@@ -175,7 +179,10 @@ public class Config {
     public static final String DAO_NAME = "dataAccess.name"; //$NON-NLS-1$
     public static final String DAO_READ_BATCH_SIZE = "dataAccess.readBatchSize";
     public static final String DAO_WRITE_BATCH_SIZE = "dataAccess.writeBatchSize";
-
+    
+    //EDIT DIDIER Ajout du separator
+    public static final String CSV_SEPARATOR = "dataAccess.CsvSeparator";
+    
     /*
      * TODO: when batching is introduced to the DataAccess, these parameters will become useful
      *     public static final String DAO_REQUEST_SIZE = "dataAccess.extractionRequestSize";
@@ -305,6 +312,7 @@ public class Config {
         setValue(SFDC_INTERNAL, false);
         setValue(SFDC_INTERNAL_IS_SESSION_ID_LOGIN, false);
         setValue(SFDC_INTERNAL_SESSION_ID, (String) null);
+        setValue(CSV_SEPARATOR, DEFAULT_CSV_SEPARATOR);
     }
 
     /**

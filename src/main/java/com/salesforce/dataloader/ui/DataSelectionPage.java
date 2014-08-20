@@ -37,6 +37,8 @@ import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -67,7 +69,11 @@ public class DataSelectionPage extends LoadPage {
     private ListViewer lv;
 
     private FileFieldEditor csvChooser;
+    
+    private Text CSVseparatorEditor;
 
+    private Button buttonReadUtf8;
+    
     public DataSelectionPage(Controller controller) {
         super(Labels.getString("DataSelectionPage.data"), Labels.getString("DataSelectionPage.dataMsg"), UIUtils.getImageRegistry().getDescriptor("splashscreens")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -81,14 +87,16 @@ public class DataSelectionPage extends LoadPage {
 
     @Override
     public void createControl(Composite parent) {
-        getShell().setImage(UIUtils.getImageRegistry().get("sfdc_icon")); //$NON-NLS-1$
+        Config config = controller.getConfig();
+        
+        
+    	getShell().setImage(UIUtils.getImageRegistry().get("sfdc_icon")); //$NON-NLS-1$
 
         GridLayout gridLayout = new GridLayout(1, false);
         gridLayout.horizontalSpacing = 10;
         gridLayout.marginHeight = 15;
         gridLayout.verticalSpacing = 5;
         gridLayout.marginRight = 5;
-
         Composite comp = new Composite(parent, SWT.NONE);
         comp.setLayout(gridLayout);
 
@@ -152,7 +160,6 @@ public class DataSelectionPage extends LoadPage {
         new Label(comp, SWT.NONE);
 
         //now select the csv
-
         Composite compChooser = new Composite(comp, SWT.NONE);
         data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_END);
         data.widthHint = 400;
@@ -183,6 +190,39 @@ public class DataSelectionPage extends LoadPage {
             }
         });
 
+        //Didier Ajout du séparateur csv
+        
+        GridLayout sepGrid = new GridLayout(2, false);
+        sepGrid.marginHeight = 15;
+        Composite compSeparator = new Composite(comp, SWT.NONE);
+        compSeparator.setLayout(sepGrid);
+        
+        data = new GridData();
+        compSeparator.setLayoutData(data);
+        
+        Label labelSeparator = new Label(compSeparator, SWT.LEFT);
+	    labelSeparator.setText(Labels.getString("DataSelectionPage.csvSeparator")); //$NON-NLS-1$
+	    data = new GridData();
+	    labelSeparator.setLayoutData(data);
+		
+	    CSVseparatorEditor = new Text(compSeparator, SWT.BORDER);
+	    CSVseparatorEditor.setTextLimit(1);
+	    CSVseparatorEditor.setText(config.getString(Config.CSV_SEPARATOR));
+	    data = new GridData();
+	    data.widthHint = 30;
+	    CSVseparatorEditor.setLayoutData(data);
+        
+	    
+	    
+	    //utf-8 for loading
+        Label labelReadUTF8 = new Label(compSeparator, SWT.RIGHT);
+        labelReadUTF8.setText(Labels.getString("AdvancedSettingsDialog.readUTF8")); //$NON-NLS-1$
+        data = new GridData(GridData.HORIZONTAL_ALIGN_END);
+        labelReadUTF8.setLayoutData(data);
+
+        buttonReadUtf8 = new Button(compSeparator, SWT.CHECK);
+        buttonReadUtf8.setSelection(config.getBoolean(Config.READ_UTF8));
+	    
         setControl(comp);
     }
 
@@ -255,6 +295,11 @@ public class DataSelectionPage extends LoadPage {
         config.setValue(Config.DAO_NAME, csvChooser.getStringValue());
         // set DAO type to CSV
         config.setValue(Config.DAO_TYPE, DataAccessObjectFactory.CSV_READ_TYPE);
+        //set csvSeparator
+        config.setValue(Config.CSV_SEPARATOR, CSVseparatorEditor.getText());
+        //setReadUtf8
+        config.setValue(Config.READ_UTF8, buttonReadUtf8.getSelection());
+        
         controller.saveConfig();
 
         DataSelectionDialog dlg = new DataSelectionDialog(getShell(), controller);
