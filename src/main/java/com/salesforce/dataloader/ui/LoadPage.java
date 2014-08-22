@@ -65,13 +65,6 @@ public abstract class LoadPage extends WizardPage {
         }
     }
     
-   /* @Override
-    public Shell getShell(){
-    	Shell ret = super.getShell();
-		ret.setBackground(new Color(Display.getCurrent(),0 ,136, 204));
-    	return ret;
-    }
-*/
     /**
      * Need to subclass this function to prevent the getNextPage() function being called before the button is clicked.
      */
