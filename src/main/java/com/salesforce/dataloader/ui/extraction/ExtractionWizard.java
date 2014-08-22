@@ -146,7 +146,7 @@ public class ExtractionWizard extends BaseWizard {
             return false;
         }
 
-        return true;
+        return false;	//Always return false in order not to close the wizard
     }
 
     @Override
