@@ -23,62 +23,78 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.salesforce.dataloader.ui.mapping;
 
-import java.util.Map;
-import java.util.Map.Entry;
+public class MappingContentData {
 
-import org.apache.log4j.Logger;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.ViewerDropAdapter;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.TransferData;
+	private String CSVValue;
+	private String SFValue;
+	private String SampleData;
+	
+	public MappingContentData(){
+		
+	}
+	
+	public MappingContentData(String CSVValue,String SFValue,String SampleData){
+		this.setCSVValue(CSVValue);
+		this.setSFValue(SFValue);
+		this.setSampleData(SampleData);
+	}
 
-import com.salesforce.dataloader.ui.MappingDialog;
+	/**
+	 * @return the cSVValue
+	 */
+	public String getCSVValue() {
+		return CSVValue;
+	}
 
-/**
- * Describe your class here.
- *
- * @author Lexi Viripaeff
- * @since 6.0
- */
-public class MappingDropAdapter extends ViewerDropAdapter {
+	/**
+	 * @param cSVValue the cSVValue to set
+	 */
+	public void setCSVValue(String cSVValue) {
+		if(cSVValue == null)
+			cSVValue ="";
+		CSVValue = cSVValue;
+	}
 
-    private final MappingDialog dlg;
-    
-    public MappingDropAdapter(TableViewer arg0, MappingDialog dlg) {
-        super(arg0);
-        this.dlg = dlg;
-    }
+	/**
+	 * @return the sFValue
+	 */
+	public String getSFValue() {
+		return SFValue;
+	}
 
-    @Override
-    public boolean performDrop(Object arg0) {
+	/**
+	 * @param sFValue the sFValue to set
+	 */
+	public void setSFValue(String sFValue) {
+		if(sFValue == null)
+			sFValue="";
+		SFValue = sFValue;
+	}
 
-        TableViewer viewer = (TableViewer)getViewer();
+	/**
+	 * @return the sampleData
+	 */
+	public String getSampleData() {
+		return SampleData;
+	}
 
-        @SuppressWarnings("unchecked")
-        MappingContentData entry = (MappingContentData)getCurrentTarget();
-        //Map.Entry<String, String> entry = (Entry<String, String>)getCurrentTarget();
-        //replenish the old
-        String oldSforce = entry.getSFValue();
-        if (oldSforce != null && oldSforce.length() > 0) {
-            dlg.replenishField(oldSforce);
-        }
-
-        entry.setSFValue((String)arg0);
-        dlg.getMapper().putMapping(entry.getCSVValue(), entry.getSFValue());
-        viewer.refresh();
-        dlg.packMappingColumns();
-
-
-        return true;
-    }
-
-    @Override
-    public boolean validateDrop(Object arg0, int arg1, TransferData arg2) {
-
-        return TextTransfer.getInstance().isSupportedType(arg2);
-    }
-
+	/**
+	 * @param sampleData the sampleData to set
+	 */
+	public void setSampleData(String sampleData) {
+		if(sampleData == null)
+			sampleData="";
+		if(sampleData.length()>100)
+			sampleData = sampleData.substring(0,100)+" ...";
+		SampleData = sampleData;
+	}
+	
+	@Override
+	public String toString(){
+		return CSVValue+" -> "+SFValue;
+	}
+	
+	
 }

@@ -26,7 +26,8 @@
 
 package com.salesforce.dataloader.ui.mapping;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -46,8 +47,20 @@ public class MappingContentProvider implements IStructuredContentProvider {
      */
     @Override
     public Object[] getElements(Object arg0) {
-
-        return ((LoadMapper)arg0).getMappingWithUnmappedColumns(true).entrySet().toArray(new Map.Entry[0]);
+    	//for(((LoadMapper)arg0).getMappingWithUnmappedColumns(true).entrySet())
+    	ArrayList<MappingContentData> ret = new ArrayList<MappingContentData>() ;
+    	LoadMapper mapper = (LoadMapper) arg0;
+    	for(Entry<String, String> e : ((LoadMapper)arg0).getMappingWithUnmappedColumns(true).entrySet()){
+    		String csvField = e.getKey();
+    		//Object a = csvField;
+    		String sfField = e.getValue();
+    		String sampleField = "";
+    		if(mapper.firstRow != null){
+    			sampleField = mapper.firstRow.get(csvField).toString();
+    		}
+    		ret.add(new MappingContentData(csvField, sfField, sampleField));
+    	}
+    	return ret.toArray();
     }
 
     /**

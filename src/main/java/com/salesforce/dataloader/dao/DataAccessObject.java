@@ -29,6 +29,7 @@ package com.salesforce.dataloader.dao;
 import java.util.List;
 
 import com.salesforce.dataloader.exception.DataAccessObjectInitializationException;
+import com.salesforce.dataloader.model.Row;
 
 /**
  * Data access object interface. Implementations should implement this for data sources such as CSV file, Database, etc.
@@ -67,4 +68,10 @@ public interface DataAccessObject {
      * @return Current record number that has been read or written
      */
     int getCurrentRowNumber();
+
+    /**
+     * @return FirstRow of this dao
+     */
+	Row getFirstRow();
+
 }

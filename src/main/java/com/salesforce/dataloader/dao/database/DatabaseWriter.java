@@ -30,6 +30,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.salesforce.dataloader.model.Row;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 
@@ -280,4 +281,9 @@ public class DatabaseWriter implements DataWriter {
         // TODO: Ordered column names can possibly used for ordered output from the write. Currently, this is not used
         // since writeRow will contain column information anyway and order doesn't matter in database
     }
+    
+    @Override
+   	public Row getFirstRow(){
+   		return null;
+   	}
 }

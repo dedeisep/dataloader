@@ -69,6 +69,7 @@ public class MappingDialog extends Dialog {
 
     public static final int MAPPING_DAO = 0;
     public static final int MAPPING_SFORCE = 1;
+    public static final int MAPPING_SAMPLE = 2;
 
     //the current list of fields
     private Field[] fields;
@@ -216,7 +217,16 @@ public class MappingDialog extends Dialog {
                 autoMatchFields();
             }
         });
-
+        
+       /* Button buttonConst = new Button(comp, SWT.PUSH);
+        buttonConst.setText(Labels.getString("MappingDialog.addConst")); //$NON-NLS-1$
+        buttonConst.addSelectionListener(new SelectionAdapter() {
+        	@Override
+        	public void widgetSelected(SelectionEvent event) {
+        		addConstant();
+        	}
+        });
+*/
         ///////////////////////////////////////////////
         //InitializeSforceViewer
         ///////////////////////////////////////////////
@@ -369,14 +379,14 @@ public class MappingDialog extends Dialog {
                     IStructuredSelection selection = (IStructuredSelection)mappingTblViewer.getSelection();
                     for (Iterator it = selection.iterator(); it.hasNext();) {
                         @SuppressWarnings("unchecked")
-                        Map.Entry<String, String> elem = (Entry<String, String>)it.next();
-                        String oldSforce = elem.getValue();
+                        MappingContentData elem = (MappingContentData)it.next();
+                        String oldSforce = elem.getSFValue();
                         if (oldSforce != null && oldSforce.length() > 0) {
                             //clear the sforce
                             replenishField(oldSforce);
 
-                            elem.setValue("");
-                            mapper.removeMapping(elem.getKey());
+                            elem.setSFValue("");
+                            mapper.removeMapping(elem.getCSVValue());
 
                             packMappingColumns();
                             mappingTblViewer.refresh();
@@ -410,6 +420,18 @@ public class MappingDialog extends Dialog {
                 mappingTblViewer.refresh();
             }
         });
+        
+        //Add the third column - Sample
+        tc = new TableColumn(mappingTable, SWT.LEFT);
+        tc.setText(Labels.getString("MappingPage.SampleData")); //$NON-NLS-1$
+        tc.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                ((MappingViewerSorter)mappingTblViewer.getSorter()).doSort(MAPPING_SAMPLE);
+                mappingTblViewer.refresh();
+            }
+        });
+        
 
         //update the model
         updateMapping();
@@ -545,7 +567,14 @@ public class MappingDialog extends Dialog {
         packSforceColumns();
 
     }
-
+    /*
+    private void addConstant(){
+    	mapper.addEmptyConstant("ConstantValue");
+    	updateMapping();
+    	mappingTblViewer.refresh();
+    	packMappingColumns();
+    }
+     */
     public void packMappingColumns() {
         Table mappingTable = mappingTblViewer.getTable();
         //  Pack the columns

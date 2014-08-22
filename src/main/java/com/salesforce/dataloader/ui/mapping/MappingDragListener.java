@@ -28,6 +28,7 @@ package com.salesforce.dataloader.ui.mapping;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.dnd.*;
@@ -44,7 +45,6 @@ import com.sforce.soap.partner.Field;
 public class MappingDragListener extends DragSourceAdapter {
     private StructuredViewer viewer;
     private MappingDialog dlg;
-
     public MappingDragListener(StructuredViewer viewer, MappingDialog dialog) {
         this.viewer = viewer;
         this.dlg = dialog;
@@ -91,6 +91,7 @@ public class MappingDragListener extends DragSourceAdapter {
             if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
                 event.data = field.getName();
             }
+            	
 
         } catch (Exception e) {
             e.printStackTrace();

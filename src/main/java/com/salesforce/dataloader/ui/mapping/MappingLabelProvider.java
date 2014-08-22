@@ -64,15 +64,18 @@ public class MappingLabelProvider implements ITableLabelProvider {
     @Override
     public String getColumnText(Object arg0, int arg1) {
         @SuppressWarnings("unchecked")
-        Map.Entry<String, String> entry = (Entry<String, String>)arg0;
+        MappingContentData entry = (MappingContentData)arg0;
         String text = null;
         switch (arg1) {
         case MappingDialog.MAPPING_SFORCE:
-            text = entry.getValue();
+            text = entry.getSFValue();
             break;
         case MappingDialog.MAPPING_DAO:
-            text = entry.getKey();
+            text = entry.getCSVValue();
             break;
+        case MappingDialog.MAPPING_SAMPLE:
+        	text = entry.getSampleData();
+        	break;
         }
         if (text == null) text = "";
         return text;

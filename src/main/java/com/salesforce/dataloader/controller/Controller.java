@@ -190,9 +190,9 @@ public class Controller {
 
     public void createMapper() throws MappingInitializationException {
         String mappingFile = config.getString(Config.MAPPING_FILE);
-        this.mapper = getConfig().getOperationInfo().isExtraction() ? new SOQLMapper(getPartnerClient(),
-                dao.getColumnNames(), mappingFile) : new LoadMapper(getPartnerClient(), dao.getColumnNames(),
-                mappingFile);
+        this.mapper = getConfig().getOperationInfo().isExtraction() ? new SOQLMapper(getPartnerClient(), dao.getColumnNames(), mappingFile) : 
+                	new LoadMapper(getPartnerClient(), dao.getColumnNames(), mappingFile);
+        this.mapper.firstRow = dao.getFirstRow();
     }
 
     public void createAndShowGUI() throws ControllerInitializationException {
@@ -470,6 +470,7 @@ public class Controller {
 
         // if status files are not specified, generate the files automatically
         String successPath = config.getString(Config.OUTPUT_SUCCESS);
+        //TODO DIdier Rajouter le nom du fichier source dans les output 
         if (generateFiles || successPath == null || successPath.length() == 0) {
             successPath = new File(statusDir, "success" + timestamp + ".csv").getAbsolutePath(); //$NON-NLS-1$ //$NON-NLS-2$
         }

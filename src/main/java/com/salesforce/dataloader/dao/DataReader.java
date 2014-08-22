@@ -62,4 +62,7 @@ public interface DataReader extends DataAccessObject {
      * @throws DataAccessObjectException
      */
     int getTotalRows() throws DataAccessObjectException;
+    
+
+	Row getFirstRow();
 }

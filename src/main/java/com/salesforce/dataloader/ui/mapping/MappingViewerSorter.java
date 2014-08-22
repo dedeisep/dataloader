@@ -67,18 +67,26 @@ public class MappingViewerSorter extends ViewerSorter {
     public int compare(Viewer viewer, Object e1, Object e2) {
         int rc = 0;
         @SuppressWarnings("unchecked")
-        Entry<String, String> m1 = (Entry<String, String>)e1;
+        //Entry<String, String> m1 = (Entry<String, String>)e1;
+        MappingContentData m1 = (MappingContentData) e1;
         @SuppressWarnings("unchecked")
-        Entry<String, String> m2 = (Entry<String, String>)e2;
+        //Entry<String, String> m2 = (Entry<String, String>)e2;
+        MappingContentData m2 = (MappingContentData) e2;
 
         // Determine which column and do the appropriate sort
         switch (column) {
         case MappingDialog.MAPPING_DAO:
-            rc = collator.compare(m1.getKey(), m2.getKey());
+            //rc = collator.compare(m1.getKey(), m2.getKey());
+        	rc = collator.compare(m1.getCSVValue(), m2.getCSVValue());
             break;
         case MappingDialog.MAPPING_SFORCE:
-            rc = collator.compare(m1.getValue(), m2.getValue());
+            //rc = collator.compare(m1.getValue(), m2.getValue());
+        	rc = collator.compare(m1.getSFValue(), m2.getSFValue());
             break;
+        case MappingDialog.MAPPING_SAMPLE:
+        	//rc = collator.compare(m1.getValue(), m2.getValue());
+        	rc = collator.compare(m1.getSampleData(), m2.getSampleData());
+        	break;
         }
 
         // If descending order, flip the direction

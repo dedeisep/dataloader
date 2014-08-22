@@ -68,11 +68,14 @@ public abstract class Mapper {
     }
 
     private final Set<String> daoColumns;
+    
     private final Map<String, String> constants = caseInsensitiveMap();
 
     private final Map<String, String> map = caseInsensitiveMap();
     private final PartnerClient client;
 
+    public Row firstRow;
+    
     private <V> Map<String, V> caseInsensitiveMap() {
         return new TreeMap<String, V>(String.CASE_INSENSITIVE_ORDER);
     }
@@ -85,13 +88,17 @@ public abstract class Mapper {
         this.daoColumns = Collections.unmodifiableSet(daoColumns);
         putPropertyFileMappings(mappingFileName);
     }
-
+    
     public final void putMapping(String src, String dest) {
         this.map.put(src, dest);
     }
 
     protected void putConstant(String name, String value) {
         handleMultipleValuesFromConstant(name, extractConstant(value));
+    }
+    
+    public void addEmptyConstant(String constantName){
+    	putConstant("", constantName);
     }
 
     private void handleMultipleValuesFromConstant(String name, String value) {

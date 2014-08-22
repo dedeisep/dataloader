@@ -241,5 +241,10 @@ public class CSVFileWriter implements DataWriter {
     public int getCurrentRowNumber() {
         return currentRowNumber;
     }
+    
+    @Override
+   	public Row getFirstRow(){
+   		return null;
+   	}
 
 }

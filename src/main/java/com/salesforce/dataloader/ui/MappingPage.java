@@ -156,6 +156,11 @@ public class MappingPage extends LoadPage {
         tc = new TableColumn(mappingTable, SWT.LEFT);
         tc.setText(Labels.getString("MappingPage.name")); //$NON-NLS-1$
 
+        //Add the preview column
+        tc = new TableColumn(mappingTable, SWT.LEFT);
+        tc.setText(Labels.getString("MappingPage.SampleData")); //$NON-NLS-1$
+        
+        
         //update the model
         updateMapping();
 

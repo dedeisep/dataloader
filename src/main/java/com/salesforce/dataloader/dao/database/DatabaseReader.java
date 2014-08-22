@@ -243,4 +243,9 @@ public class DatabaseReader implements DataReader {
     public void close() {
         dbContext.close();
     }
+    
+    @Override
+	public Row getFirstRow(){
+		return null;
+	}
 }

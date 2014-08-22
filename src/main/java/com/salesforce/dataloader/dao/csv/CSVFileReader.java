@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -66,6 +67,7 @@ public class CSVFileReader implements DataReader {
     private boolean forceUTF8;
     private char CSVSeparator;
     private List<String> headerRow;
+    private Row firstRow;
     private boolean isOpen;
 
     public CSVFileReader(Config config) {
@@ -98,6 +100,8 @@ public class CSVFileReader implements DataReader {
         initalizeInput();
         readHeaderRow();
         isOpen = true;
+        if(getFirstRow() == null)
+        	readFirstRow();
     }
 
     /**
@@ -209,6 +213,10 @@ public class CSVFileReader implements DataReader {
     public List<String> getColumnNames() {
         return headerRow;
     }
+    
+    public Row getFirstRow(){
+    	return firstRow;
+    }
 
     /*
      * Returns the number of rows in the file. <i>Side effect:</i> Moves the row pointer to the first row
@@ -251,6 +259,22 @@ public class CSVFileReader implements DataReader {
                 IOUtils.closeQuietly(input);
             }
         }
+    }
+    
+    private void readFirstRow() throws DataAccessObjectInitializationException{
+    	try{
+    		this.firstRow = readRow();
+    		currentRowNumber--;
+    	}catch(DataAccessObjectException e){
+    		String errMsg = Messages.getString("Erreur dans la récupération de la première ligne du CSV");
+            LOGGER.error(errMsg, e);
+            throw new DataAccessObjectInitializationException(errMsg, e);
+    	} finally {
+            if(csvReader == null) {
+                IOUtils.closeQuietly(input);
+            }
+        }
+    	
     }
 
     private void initalizeInput() throws DataAccessObjectInitializationException {

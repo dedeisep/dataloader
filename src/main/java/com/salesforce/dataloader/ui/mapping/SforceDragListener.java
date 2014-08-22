@@ -29,6 +29,7 @@ package com.salesforce.dataloader.ui.mapping;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.dnd.*;
@@ -44,7 +45,9 @@ import com.salesforce.dataloader.ui.MappingDialog;
 public class SforceDragListener extends DragSourceAdapter {
     private final StructuredViewer viewer;
     private final MappingDialog dlg;
-
+    
+    private MappingContentData lastSelectedItem;
+    
     public SforceDragListener(StructuredViewer viewer, MappingDialog dialog) {
         this.viewer = viewer;
         this.dlg = dialog;
@@ -61,15 +64,20 @@ public class SforceDragListener extends DragSourceAdapter {
         try {
             if (event.detail == DND.DROP_MOVE) {
                 IStructuredSelection selection = (IStructuredSelection)viewer.getSelection();
-                for (Iterator it = selection.iterator(); it.hasNext();) {
-                    @SuppressWarnings("unchecked")
-                    Map.Entry<String, String> eventElem = (Entry<String, String>)it.next();
-                    eventElem.setValue("");
-                    dlg.getMapper().removeMapping(eventElem.getKey());
+                if(!selection.isEmpty()){
+	                for (Iterator it = selection.iterator(); it.hasNext();) {
+	                    @SuppressWarnings("unchecked")
+	                    MappingContentData eventElem = (MappingContentData)it.next();
+	                    eventElem.setSFValue("");
+	                    dlg.getMapper().removeMapping(eventElem.getCSVValue());
+	                }
+                }else{
+                	lastSelectedItem.setSFValue("");
+                	dlg.getMapper().removeMapping(lastSelectedItem.getCSVValue());
                 }
-
                 viewer.refresh();
                 dlg.packMappingColumns();
+                lastSelectedItem = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,12 +92,12 @@ public class SforceDragListener extends DragSourceAdapter {
         try {
             IStructuredSelection selection = (IStructuredSelection)viewer.getSelection();
             @SuppressWarnings("unchecked")
-            Map.Entry<String, String> elem = (Entry<String, String>)selection.getFirstElement();
-
+            MappingContentData elem = (MappingContentData)selection.getFirstElement();
+            //Map.Entry<String, String> elem = (Entry<String, String>)selection.getFirstElement();
+            lastSelectedItem = elem;
             if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
-                event.data = elem.getValue();
+                event.data = elem.getSFValue();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
