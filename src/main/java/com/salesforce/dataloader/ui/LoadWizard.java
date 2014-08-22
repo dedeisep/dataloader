@@ -105,7 +105,7 @@ public abstract class LoadWizard extends BaseWizard {
             return false;
         }
 
-        return true;
+        return false; //Not closing the window on finish
     }
 
     @Override
