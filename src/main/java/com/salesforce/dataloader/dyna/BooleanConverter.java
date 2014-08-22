@@ -90,7 +90,7 @@ public final class BooleanConverter implements Converter {
     public Object convert(Class type, Object value) {
 
         if (value == null || String.valueOf(value).length()==0) {
-            return null;
+            return Boolean.FALSE;	//On retourne false quand c'est nul
         }
 
         if (value instanceof Boolean) {
@@ -101,13 +101,20 @@ public final class BooleanConverter implements Converter {
             String stringValue = value.toString();
             if (stringValue.equalsIgnoreCase("yes") ||
                     stringValue.equalsIgnoreCase("y") ||
+                    stringValue.equalsIgnoreCase("o") ||
+                    stringValue.equalsIgnoreCase("v") ||
+                    stringValue.equalsIgnoreCase("x") ||
+                    stringValue.equalsIgnoreCase("oui") ||
+                    stringValue.equalsIgnoreCase("vrai") ||
                     stringValue.equalsIgnoreCase("true") ||
                     stringValue.equalsIgnoreCase("on") ||
                     stringValue.equalsIgnoreCase("1")) {
                 return (Boolean.TRUE);
             } else if (stringValue.equalsIgnoreCase("no") ||
                     stringValue.equalsIgnoreCase("n") ||
+                    stringValue.equalsIgnoreCase("non") ||
                     stringValue.equalsIgnoreCase("false") ||
+                    stringValue.equalsIgnoreCase("faux") ||
                     stringValue.equalsIgnoreCase("off") ||
                     stringValue.equalsIgnoreCase("0")) {
                 return (Boolean.FALSE);
